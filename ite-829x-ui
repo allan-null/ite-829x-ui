@@ -13,7 +13,7 @@ ite829xFind() {
 		
 	if [ "$ite829x" = "" ]; then
 		echo "Unable to find ite-829x binaries"
-		exit 0
+		exit 1
 	fi
 }
 
