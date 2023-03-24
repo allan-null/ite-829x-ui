@@ -15,6 +15,10 @@ ite-829x-ui --gui
 ```
 
 ## Command line usage:
+### Loading configs (for when the OS boots)
+```
+ite-829x-ui --load
+```
 
 ### Effects rotation (for keyboard bindings)
 ```
