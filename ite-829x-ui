@@ -142,7 +142,7 @@ kblToggle() {
 		effect=$([ "${effecta}" != "" ] && echo "${effecta}" || echo "${effect}")
 	fi
 
-	kblSet $([ "${brightness}" != "" ] && echo "-bs ${brightness}") $([ "${speed}" != "" ] && echo "-s ${speed}") $([ "${effect}" != "" ] && echo "-e ${effect}") $([ "${reda}" != "" ] && echo "-r ${reda}") $([ "${greena}" != "" ] && echo "-g ${greena}") $([ "${bluea}" != "" ] && echo "-b ${bluea}")
+	kblSet "$([ "${brightness}" != "" ] && echo "-bs ${brightness}")" "$([ "${speed}" != "" ] && echo "-s ${speed}")" "$([ "${effect}" != "" ] && echo "-e ${effect}")" "$([ "${reda}" != "" ] && echo "-r ${reda}")" "$([ "${greena}" != "" ] && echo "-g ${greena}")" "$([ "${bluea}" != "" ] && echo "-b ${bluea}")"
 }
 
 guiBrightness() {
