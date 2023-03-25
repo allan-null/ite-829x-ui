@@ -23,7 +23,7 @@ kblSave() {
 	leds=""
 	keys=({0..19} {32..43} {45..51} {64..83} {96..108} {110..115} 128 {130..147} {160..165} {169..179})
 	if [ "${red}" != "" ] && [ "${green}" != "" ] && [ "${blue}" != "" ]; then
-		for key in ${keys[@]}; do
+		for key in "${keys[@]}"; do
 			leds="${leds}led ${key} ${red} ${green} ${blue}\n"
 		done
 	fi
@@ -68,7 +68,7 @@ kblSet() {
 	leds=""
 	keys=({0..19} {32..43} {45..51} {64..83} {96..108} {110..115} 128 {130..147} {160..165} {169..179})
 	if [ "${red}" != "" ] && [ "${red}" != "" ] && [ "${blue}" != "" ]; then
-		for key in ${keys[@]}; do
+		for key in "${keys[@]}"; do
 			leds="${leds}led ${key} ${red} ${green} ${blue}\n"
 		done
 	fi
@@ -237,11 +237,11 @@ do
 			kblSet
 		;;
 		--set)
-			kblSet ${@}
+			kblSet "${@}"
 			kblSave
 		;;
 		--toggle)
-			kblToggle ${@}
+			kblToggle "${@}"
 			kblSave
 		;;
 		--gui)
