@@ -2,10 +2,9 @@
 An UI for the Linux driver ite-829x
 
 ## This script must interact with the driver as root!
-There are 2 easiest solutions for this:
-1 - Add a line like this `*YOUR_USERNAME* ALL = NOPASSWD: *PATH_TO_THE_BINARY*/ite-829x` to the file `/etc/sudoers` (replace the text between *);
-2 - Install `pkexec` and replace all `sudo` mentions on the script with `pkexec`; 
-
+There are 2 easiest solutions for this:  
+1 - Add a line like this `*YOUR_USERNAME* ALL = NOPASSWD: *PATH_TO_THE_BINARY*/ite-829x` to the file `/etc/sudoers` (replace the text between *);  
+2 - Install `pkexec` and replace all `sudo` mentions on the script with `pkexec`;  
 
 ## Dependencies
 - ite-829x (https://github.com/matheusmoreira/ite-829x)
