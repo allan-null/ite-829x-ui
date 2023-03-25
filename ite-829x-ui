@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ite829x=""
-configPath="/home/$USER/.local/share/"
+configPath="/home/${USER}/.local/share/"
 configFile="ite-829x.conf"
 
 ite829xFind() {
@@ -10,8 +10,8 @@ ite829xFind() {
 	elif [ "$(ls ite-829x)" != "" ]; then
 		ite829x="./ite-829x"
 	fi
-		
-	if [ "$ite829x" = "" ]; then
+
+	if [ "${ite829x}" = "" ]; then
 		echo "Unable to find ite-829x binaries"
 		exit 1
 	fi
@@ -22,34 +22,34 @@ kblSave() {
 
 	leds=""
 	keys=({0..19} {32..43} {45..51} {64..83} {96..108} {110..115} 128 {130..147} {160..165} {169..179})
-	if [ "$red" != "" ] && [ "$green" != "" ] && [ "$blue" != "" ]; then
-		for key in ${keys[@]}; do
-			leds="${leds}led $key $red $green $blue\n"
+	if [ "${red}" != "" ] && [ "${green}" != "" ] && [ "${blue}" != "" ]; then
+		for key in "${keys[@]}"; do
+			leds="${leds}led ${key} ${red} ${green} ${blue}\n"
 		done
 	fi
 
 
-	cfg="reset\nbrightness+speed $brightness $speed\neffects $effect\n$leds"
+	cfg="reset\nbrightness+speed ${brightness} ${speed}\neffects ${effect}\n${leds}"
 
-	echo -e $cfg > ${configPath}${configFile}
+	echo -e "${cfg}" > "${configPath}${configFile}"
 }
 
 kblLoad() {
-	brightnessspeed=$(cat ${configPath}${configFile} | grep 'brightness+speed' | sed 's/brightness+speed//' | xargs)
-	IFS=' ' read -ra brightnessspeed <<< "$brightnessspeed"
-	brightness=${brightnessspeed[0]}
-	speed=${brightnessspeed[1]}
-	effect=$(cat ${configPath}${configFile} | grep 'effects' | sed 's/effects//' | xargs)
-	colorrgb=$(cat ${configPath}${configFile} | grep 'led' | head -1 | sed 's/led//' | xargs)
-	IFS=' ' read -ra colorrgb <<< "$colorrgb"
-	red=${colorrgb[1]}
-	green=${colorrgb[2]}
-	blue=${colorrgb[3]}
+	brightnessspeed=$(grep 'brightness+speed' < "${configPath}${configFile}" | sed 's/brightness+speed//' | xargs)
+	IFS=' ' read -ra brightnessspeed <<< "${brightnessspeed}"
+	brightness="${brightnessspeed[0]}"
+	speed="${brightnessspeed[1]}"
+	effect=$(grep 'effects' < "${configPath}${configFile}" | sed 's/effects//' | xargs)
+	colorrgb=$(grep 'led' < "${configPath}${configFile}" | head -1 | sed 's/led//' | xargs)
+	IFS=' ' read -ra colorrgb <<< "${colorrgb}"
+	red="${colorrgb[1]}"
+	green="${colorrgb[2]}"
+	blue="${colorrgb[3]}"
 }
 
 kblSet() {
 	i=1;
-	for arg in "$@" 
+	for arg in "${@}"
 	do
 		j=$((i + 1))
 		case "${!i}" in
@@ -59,6 +59,7 @@ kblSet() {
 			-r | --red) red=${!j};;
 			-g | --green) green=${!j};;
 			-b | --blue) blue=${!j};;
+			*) exit 1;;
 		esac
 		i=$((i + 1));
 	done
@@ -67,34 +68,34 @@ kblSet() {
 
 	leds=""
 	keys=({0..19} {32..43} {45..51} {64..83} {96..108} {110..115} 128 {130..147} {160..165} {169..179})
-	if [ "$red" != "" ] && [ "$red" != "" ] && [ "$blue" != "" ]; then
-		for key in ${keys[@]}; do
-			leds="${leds}led $key $red $green $blue\n"
+	if [ "${red}" != "" ] && [ "${red}" != "" ] && [ "${blue}" != "" ]; then
+		for key in "${keys[@]}"; do
+			leds="${leds}led ${key} ${red} ${green} ${blue}\n"
 		done
 	fi
 
-	echo -e $leds
+	echo -e "${leds}"
 
-	if [ "$effect" = "7" ]; then
-		cfg="reset\nbrightness+speed $brightness $speed\n"
+	if [ "${effect}" = "7" ]; then
+		cfg="reset\nbrightness+speed ${brightness} ${speed}\n"
 	else
-		cfg="reset\nbrightness+speed $brightness $speed\neffects $effect\n"
+		cfg="reset\nbrightness+speed ${brightness} ${speed}\neffects ${effect}\n"
 	fi
 
-	if [ "$effect" = "7" ]; then
-		sudo $ite829x << LEDs
-			$(echo -e ${cfg}${leds})
+	if [ "${effect}" = "7" ]; then
+		sudo "${ite829x}" << LEDs
+			$(echo -e "${cfg}${leds}")
 LEDs
 	else
-		sudo $ite829x << LEDs
-			$(echo -e ${cfg})
+		sudo "${ite829x}" << LEDs
+			$(echo -e "${cfg}")
 LEDs
 	fi
 }
 
 kblToggle() {
 	i=1;
-	for arg in "$@" 
+	for arg in "${@}"
 	do
 		j=$((i + 1))
 		case "${!i}" in
@@ -102,61 +103,62 @@ kblToggle() {
 			-s | --speed) speeda=${!j};;
 			-e | --effect) effecta=${!j};;
 			-c | --color) color=${!j};;
+			*) exit 1;;
 		esac
 		i=$((i + 1));
 	done
 
-	if [ "$brightnessa" = 'up' ] && [ "$brightness" != 4 ]; then
+	if [ "${brightnessa}" = 'up' ] && [ "${brightness}" != 4 ]; then
 		brightness=$((brightness + 1))
-	elif [ "$brightnessa" = 'down' ] && [ "$brightness" != 0 ]; then
+	elif [ "${brightnessa}" = 'down' ] && [ "${brightness}" != 0 ]; then
 		brightness=$((brightness - 1))
 	fi
 
-	if [ "$speeda" = 'up' ] && [ "$speed" < 3 ]; then
+	if [ "${speeda}" = 'up' ] && [ "${speed}" -lt 3 ]; then
 		speed=$((speed + 1))
-	elif [ "$speeda" = 'down' ] && [ "$speed" > 0 ]; then
+	elif [ "${speeda}" = 'down' ] && [ "${speed}" -gt 0 ]; then
 		speed=$((speed - 1))
-	elif [ "$speeda" = 'step' ] && [ "$speed" < 3 ]; then
+	elif [ "${speeda}" = 'step' ] && [ "${speed}" -lt 3 ]; then
 		speed=$((speed + 1))
-	elif [ "$speeda" = 'step' ] && [ "$speed" = 3 ]; then
+	elif [ "${speeda}" = 'step' ] && [ "${speed}" = 3 ]; then
 		speed=0
 	fi
 
-	if [ "$effecta" = 'rotate' ]; then
+	if [ "${effecta}" = 'rotate' ]; then
 		effect=$((effect + 1))
 
-		if [ "$effect" != 7 ]; then
+		if [ "${effect}" != 7 ]; then
 			reda=''
 			greena=''
 			bluea=''
 		else
-			reda=$red
-			greena=$green
-			bluea=$blue
+			reda=${red}
+			greena=${green}
+			bluea=${blue}
 		fi
 
-		if [ "$effect" = 8 ]; then
+		if [ "${effect}" = 8 ]; then
 			effect=0
 		fi
 	else
-		effect=$([ "$effecta" != "" ] && echo "$effecta" || echo "$effect")
+		effect=$([ "${effecta}" != "" ] && echo "${effecta}" || echo "${effect}")
 	fi
 
-	kblSet $([ "$brightness" != "" ] && echo "-bs $brightness") $([ "$speed" != "" ] && echo "-s $speed") $([ "$effect" != "" ] && echo "-e $effect") $([ "$reda" != "" ] && echo "-r $reda") $([ "$greena" != "" ] && echo "-g $greena") $([ "$bluea" != "" ] && echo "-b $bluea")
+	kblSet "$([ "${brightness}" != "" ] && echo "-bs ${brightness}")" "$([ "${speed}" != "" ] && echo "-s ${speed}")" "$([ "${effect}" != "" ] && echo "-e ${effect}")" "$([ "${reda}" != "" ] && echo "-r ${reda}")" "$([ "${greena}" != "" ] && echo "-g ${greena}")" "$([ "${bluea}" != "" ] && echo "-b ${bluea}")"
 }
 
 guiBrightness() {
-	guiBrightness=$(zenity --scale --title "ite-829x brightness" --value $brightness --max-value=4 --min-value=0)
-	brightness=$([ "$guiBrightness" != "" ] && echo $guiBrightness || echo $brightness)
+	guiBrightness=$(zenity --scale --title "ite-829x brightness" --value "${brightness}" --max-value=4 --min-value=0)
+	brightness=$([ "${guiBrightness}" != "" ] && echo "${guiBrightness}" || echo "${brightness}")
 
-	kblSet -bs $brightness
+	kblSet -bs "${brightness}"
 }
 
 guiSpeed() {
-	guiSpeed=$(zenity --scale --title "ite-829x speed" --value $speed --max-value=3 --min-value=0)
-	speed=$([ "$guiSpeed" != "" ] && echo $guiSpeed || echo $speed)
+	guiSpeed=$(zenity --scale --title "ite-829x speed" --value "${speed}" --max-value=3 --min-value=0)
+	speed=$([ "${guiSpeed}" != "" ] && echo "${guiSpeed}" || echo "${speed}")
 
-	kblSet -s $speed
+	kblSet -s "${speed}"
 }
 
 guiEffect() {
@@ -170,20 +172,20 @@ guiEffect() {
 		"6" "Snake" \
 		"7" "Solid"
 	)
-	effect=$([ "$guiEffect" != "" ] && echo $guiEffect || echo $effect)
+	effect=$([ "${guiEffect}" != "" ] && echo "${guiEffect}" || echo "${effect}")
 
-	kblSet -e $effect
+	kblSet -e "${effect}"
 }
 
 guiColor() {
-	color=$(zenity --color-selection --title "ite-829x color" --color "rgb($red,$green,$blue)" | sed 's/rgb(//' | sed 's/)//' | xargs)
-	if [ "$color" != "" ]; then
-		IFS=',' read -ra color <<< "$color"
-		red=${color[0]}
-		green=${color[1]}
-		blue=${color[2]}
+	color=$(zenity --color-selection --title "ite-829x color" --color "rgb(${red},${green},${blue})" | sed 's/rgb(//' | sed 's/)//' | xargs)
+	if [ "${color}" != "" ]; then
+		IFS=',' read -ra color <<< "${color}"
+		red="${color[0]}"
+		green="${color[1]}"
+		blue="${color[2]}"
 
-		kblSet -e $effect -r $red -g $green -b $blue
+		kblSet -e "${effect}" -r "${red}" -g "${green}" -b "${blue}"
 	fi
 }
 
@@ -191,14 +193,14 @@ guiMain() {
 	effects=("Wave" "Breathe" "Scan" "Blink" "Random" "Ripple" "Snake" "Solid")
 
 	cmd=$(zenity --list --title "ite-829x GUI" --column='Property' --column='Value' \
-		"Brightness" $brightness \
-		"Speed" $speed \
-		"Effect" ${effects[$effect]} \
-		"Color" "$red, $green, $blue" \
+		"Brightness" "${brightness}" \
+		"Speed" "${speed}" \
+		"Effect" "${effects[${effect}]}" \
+		"Color" "${red}, ${green}, ${blue}" \
 		"Save" ""
 	)
 
-	case "$cmd" in
+	case "${cmd}" in
 		Brightness)
 			guiBrightness
 			guiMain
@@ -229,23 +231,26 @@ ite829xFind
 kblLoad
 
 i=1;
-for arg in "$@"
+for arg in "${@}"
 do
 	j=$((i + 1))
 	case "${!i}" in
 		--load)
 			kblSet
 		;;
-		--set) 
-			kblSet $@
+		--set)
+			kblSet "${@}"
 			kblSave
 		;;
 		--toggle)
-			kblToggle $@
+			kblToggle "${@}"
 			kblSave
 		;;
 		--gui)
 			guiMain
+		;;
+		*)
+			exit 1
 		;;
 	esac
 	i=$((i + 1));
