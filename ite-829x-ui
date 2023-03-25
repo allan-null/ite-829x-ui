@@ -112,11 +112,11 @@ kblToggle() {
 		brightness=$((brightness - 1))
 	fi
 
-	if [ "${speeda}" = 'up' ] && [ "${speed}" < 3 ]; then
+	if [ "${speeda}" = 'up' ] && [ "${speed}" -lt 3 ]; then
 		speed=$((speed + 1))
-	elif [ "${speeda}" = 'down' ] && [ "${speed}" > 0 ]; then
+	elif [ "${speeda}" = 'down' ] && [ "${speed}" -gt 0 ]; then
 		speed=$((speed - 1))
-	elif [ "${speeda}" = 'step' ] && [ "${speed}" < 3 ]; then
+	elif [ "${speeda}" = 'step' ] && [ "${speed}" -lt 3 ]; then
 		speed=$((speed + 1))
 	elif [ "${speeda}" = 'step' ] && [ "${speed}" = 3 ]; then
 		speed=0
