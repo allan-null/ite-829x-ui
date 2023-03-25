@@ -59,6 +59,7 @@ kblSet() {
 			-r | --red) red=${!j};;
 			-g | --green) green=${!j};;
 			-b | --blue) blue=${!j};;
+			*) exit 1;;
 		esac
 		i=$((i + 1));
 	done
@@ -102,6 +103,7 @@ kblToggle() {
 			-s | --speed) speeda=${!j};;
 			-e | --effect) effecta=${!j};;
 			-c | --color) color=${!j};;
+			*) exit 1;;
 		esac
 		i=$((i + 1));
 	done
@@ -246,6 +248,9 @@ do
 		;;
 		--gui)
 			guiMain
+		;;
+		*)
+			exit 1
 		;;
 	esac
 	i=$((i + 1));
