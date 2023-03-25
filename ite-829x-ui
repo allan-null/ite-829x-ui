@@ -35,12 +35,12 @@ kblSave() {
 }
 
 kblLoad() {
-	brightnessspeed=$(cat "${configPath}${configFile}" | grep 'brightness+speed' | sed 's/brightness+speed//' | xargs)
+	brightnessspeed=$(grep 'brightness+speed' < "${configPath}${configFile}" | sed 's/brightness+speed//' | xargs)
 	IFS=' ' read -ra brightnessspeed <<< "${brightnessspeed}"
 	brightness="${brightnessspeed[0]}"
 	speed="${brightnessspeed[1]}"
-	effect=$(cat "${configPath}${configFile}" | grep 'effects' | sed 's/effects//' | xargs)
-	colorrgb=$(cat "${configPath}${configFile}" | grep 'led' | head -1 | sed 's/led//' | xargs)
+	effect=$(grep 'effects' < "${configPath}${configFile}" | sed 's/effects//' | xargs)
+	colorrgb=$(grep 'led' < "${configPath}${configFile}" | head -1 | sed 's/led//' | xargs)
 	IFS=' ' read -ra colorrgb <<< "${colorrgb}"
 	red="${colorrgb[1]}"
 	green="${colorrgb[2]}"
