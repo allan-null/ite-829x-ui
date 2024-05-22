@@ -1,7 +1,5 @@
 > [!CAUTION]
-> This repository is **deprecated** in favor of better written and better maintened software by **TUXEDO Computers**:
-> [TUXEDO drivers](https://gitlab.com/tuxedocomputers/development/packages/tuxedo-drivers)
-> [TUXEDO Control Center](https://github.com/tuxedocomputers/tuxedo-control-center)  
+> This repository is **deprecated** in favor of better written and better maintened software by **TUXEDO Computers**: [TUXEDO drivers](https://gitlab.com/tuxedocomputers/development/packages/tuxedo-drivers), [TUXEDO Control Center](https://github.com/tuxedocomputers/tuxedo-control-center).
   
 # ite-829x-ui
 An UI for the Linux driver ite-829x
